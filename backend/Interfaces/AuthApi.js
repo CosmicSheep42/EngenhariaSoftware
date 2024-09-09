@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const { DatabasePool } = require('../Modules/DatabaseModule');
+const { DatabasePool } = require('../Modules/databaseModule');
 
 // Função para registrar um novo usuário
 async function Register(req, res) {
@@ -43,7 +43,7 @@ async function Login(req, res) {
 
         const result = await client.query('SELECT * FROM usuarios WHERE username = $1', [username.toLowerCase()]);
 
-        if (result.rows.length === 0) {
+        if (result.rows.length === 0) { 
             res.status(401).json({ message: 'No User Found' });
             return;
         }
@@ -54,7 +54,7 @@ async function Login(req, res) {
         const IsMatch = await bcrypt.compare(password, User.password);
 
         if (IsMatch) {
-            req.session.user = { id: User.id, username: User.username, email: User.email };
+            req.session.user = { id: User.id, username: User.username, email: User.email, adm: User.adm };
             res.status(200).json({ message: 'Authentication successful' });
         } else {
             res.status(401).json({ message: 'Authentication failed' });

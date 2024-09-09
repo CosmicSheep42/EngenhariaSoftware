@@ -1,4 +1,4 @@
-const { DatabasePool } = require('../Modules/DatabaseModule.js');
+const { DatabasePool } = require('../Modules/databaseModule.js');
 
 async function GetPinInfo(req, res) {
     const client = await DatabasePool.connect();
