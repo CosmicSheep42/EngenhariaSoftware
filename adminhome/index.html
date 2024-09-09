@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Interativo</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <link rel="stylesheet" href="./style.css" />
+
+</head>
+
+<body>
+
+    <!-- Mapa -->
+    <div id="map"></div>
+
+    <!-- Right Drawer -->
+    <div id="infoDrawer" class="drawer p-3">
+        <div class="drawer-toggle"></div>
+        <ul class="nav nav-tabs" id="drawerTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="geral-tab" data-bs-toggle="tab" data-bs-target="#geral" type="button" role="tab" aria-controls="geral" aria-selected="true">Geral</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="reviews" aria-selected="false">Reviews</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="cardapio-tab" data-bs-toggle="tab" data-bs-target="#cardapio" type="button" role="tab" aria-controls="cardapio" aria-selected="false">Cardápio</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="avisos-tab" data-bs-toggle="tab" data-bs-target="#avisos" type="button" role="tab" aria-controls="avisos" aria-selected="false">Avisos</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="drawerContent">
+            <div class="tab-pane fade show active panel" id="geral" role="tabpanel" aria-labelledby="geral-tab">
+                <h5 id="drawer-title"></h5>
+                <p id="drawer-description"></p>
+                <p id="drawer-subtitle"></p>
+                <p id="drawer-status"></p>
+                <div id="drawer-stars" class="star-display"></div>
+                <button id="edit-pin-btn" class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#editPinModal">Editar Pin</button>
+            </div>
+            <div class="tab-pane fade panel" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                <div id="reviews-list"></div>
+                <div>
+                    <h6>Deixe sua review:</h6>
+                    <div class="star-rating">
+                        <input type="radio" id="star5" name="rating" value="5" /><label for="star5">★</label>
+                        <input type="radio" id="star4" name="rating" value="4" /><label for="star4">★</label>
+                        <input type="radio" id="star3" name="rating" value="3" /><label for="star3">★</label>
+                        <input type="radio" id="star2" name="rating" value="2" /><label for="star2">★</label>
+                        <input type="radio" id="star1" name="rating" value="1" /><label for="star1">★</label>
+                    </div>
+                    <textarea id="review-texto" placeholder="Sua review" class="form-control mb-2"></textarea>
+                    <button id="submit-review" class="btn btn-primary">Enviar</button>
+                </div>
+            </div>
+            <div class="tab-pane fade panel" id="cardapio" role="tabpanel" aria-labelledby="cardapio-tab">
+                <div id="cardapio-content"></div>
+            </div>
+            <div class="tab-pane fade panel" id="avisos" role="tabpanel" aria-labelledby="avisos-tab">
+                <div id="avisos-content"></div>
+            </div>
+        </div>
+        <input type="hidden" id="current-place-id">
+    </div>
+
+    <!-- Locate Button -->
+    <button id="locate-btn" class="locate-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+            <path d="M12.166 8.94c-.44 1.47-1.278 2.91-2.395 4.196-1.214 1.386-2.571 2.517-3.47 3.05-.212.123-.432.181-.658.181-.3 0-.63-.16-.926-.465C4.053 15.139 1.1 12.467.166 11.025c-.545-.851-.742-1.61-.61-2.278.158-.817.743-1.517 1.58-1.982a5.513 5.513 0 0 1 2.168-.63 5.52 5.52 0 0 1 2.267.417l.707-.707a4.5 4.5 0 1 1 4.528-2.145.752.752 0 0 1 .907-.098 4.477 4.477 0 0 1 2.145 4.528l-.707.707a5.515 5.515 0 0 1 .417 2.267c-.464.837-1.165 1.423-1.982 1.58-.668.132-1.427-.065-2.278-.61C12.467 11.1 9.795 8.147 8.94 7.834c-.305-.296-.465-.626-.465-.926 0-.226.058-.446.181-.658.533-.9 1.664-2.256 3.05-3.47C13.09 2.544 14.53 1.705 16 1.265v7.235c-1.47-.44-2.91-1.278-4.196-2.395-1.386-1.214-2.517-2.571-3.05-3.47-.123-.212-.181-.432-.181-.658 0-.3.16-.63.465-.926z" />
+        </svg>
+    </button>
+
+    <!-- Edit Pin Modal -->
+    <div class="modal fade" id="editPinModal" tabindex="-1" aria-labelledby="editPinModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPinModalLabel">Editar Pin</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-pin-form">
+                        <div class="mb-3">
+                            <label for="pin-name" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="pin-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pin-description" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="pin-description" rows="3" required></textarea>
+                        </div>
+
+                        <input type="hidden" id="pin-id">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS & Leaflet JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+    <script src="./behaviour.js"></script>
+</body>
+
+</html>
