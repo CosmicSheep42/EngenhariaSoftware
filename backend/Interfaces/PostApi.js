@@ -1,4 +1,4 @@
-const { DatabasePool } = require('../Modules/databaseModule.js');
+const { DatabasePool } = require('../modules/DatabaseModule.js');
 
 async function PostReview(req, res) {
     const { review, rating, id } = req.body;

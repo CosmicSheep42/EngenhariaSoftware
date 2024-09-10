@@ -5,13 +5,13 @@ const session = require('express-session');
 
 //Apis
 const AuthApi = require('./backend/Interfaces/AuthApi.js');
-const FetchDataApi = require('./Backend/Interfaces/FetchApi.js');
-const PostDataApi = require('./Backend/Interfaces/PostApi.js');
+const FetchDataApi = require('./backend/Interfaces/FetchApi.js');
+const PostDataApi = require('./backend/Interfaces/PostApi.js');
 
 //Modules
-const RedirectModule = require('./backend/Modules/RedirectModule.js');
-const DatabaseModule = require('./backend/Modules/databaseModule.js');
-const SessionModule = require('./backend/Modules/SessionModule.js');
+const RedirectModule = require('./backend/modules/RedirectModule.js');
+const DatabaseModule = require('./backend/modules/DatabaseModule.js');
+const SessionModule = require('./backend/modules/SessionModule.js');
 
 const App = express();
 
@@ -53,11 +53,11 @@ App.use('/assets', express.static('./frontend/assets'));
 App.use('/styles', express.static('./frontend/styles'));
 
 // Protect Frontend route
-App.use('/userhome', RedirectModule.isAuthenticated, SessionModule.RenewSession, express.static('./Frontend/userhome'));
-App.use('/adminhome', RedirectModule.isAuthenticated, RedirectModule.isAdmin, express.static('./Frontend/adminhome'));
+App.use('/userhome', RedirectModule.isAuthenticated, SessionModule.RenewSession, express.static('./frontend/userhome'));
+App.use('/adminhome', RedirectModule.isAuthenticated, RedirectModule.isAdmin, express.static('./frontend/adminhome'));
 
 
-App.use('/', RedirectModule.isAuthenticated, SessionModule.RenewSession, RedirectModule.Redirect, express.static('./Frontend/'));
+App.use('/', RedirectModule.isAuthenticated, SessionModule.RenewSession, RedirectModule.Redirect, express.static('./frontend/'));
 
 // Start Server
 HttpServer.listen(port, ip, () => { console.log(`Server is listening on http://${ip}:${port}`) });
