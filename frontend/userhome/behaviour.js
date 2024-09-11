@@ -145,4 +145,13 @@ function getStarIcons(rating) {
     return stars;
 }
 
+// Function to handle logout
+function handleLogout() {
+    // Perform logout action, e.g., clear session, redirect to login page, etc.
+    // For demonstration, we'll just redirect to a login page
+    window.location.href = '/login';
+}
+
+document.getElementById('logout-btn').addEventListener('click', handleLogout);
+
 addAllPins();
