@@ -7,7 +7,7 @@ CREATE TABLE places (
     lat DECIMAL(9, 6) NOT NULL,
     lon DECIMAL(9, 6) NOT NULL,
     estrelas NUMERIC(2, 1) DEFAULT 0,  -- Média das estrelas
-    quantidade_reviews INTEGER DEFAULT 0,  -- Quantidade de reviews
+    quantidade_reviews INTEGER DEFAULT 0  -- Quantidade de reviews
 );
 
 CREATE TABLE uploads (
