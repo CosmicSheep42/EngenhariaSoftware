@@ -20,6 +20,7 @@
                     <div class="mb-3">
                         <label for="username" class="form-label">Nome de Usuário</label>
                         <input type="text" class="form-control" id="username" required>
+                        <small id="usernameHelp" class="form-text text-muted"></small>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
@@ -28,10 +29,19 @@
                     <div class="mb-3">
                         <label for="password" class="form-label">Senha</label>
                         <input type="password" class="form-control" id="password" required>
+                        <small id="passwordHelp" class="form-text text-muted"></small>
                     </div>
                     <div class="mb-3">
                         <label for="confirmPassword" class="form-label">Confirmar Senha</label>
                         <input type="password" class="form-control" id="confirmPassword" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cpf" class="form-label">CPF</label>
+                        <input type="text" class="form-control" id="cpf" maxlength="14" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="birthdate" class="form-label">Data de Nascimento</label>
+                        <input type="date" class="form-control" id="birthdate" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Registrar</button>
                     <p class="mt-3 text-center">Já tem uma conta? <a href="/login">Entrar</a></p>
@@ -46,6 +56,69 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- JavaScript -->
     <script>
+        function validarCPF(cpf) {
+            const regex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+            return regex.test(cpf);
+        }
+
+        function validarDataNascimento(data) {
+            const hoje = new Date();
+            const dataNascimento = new Date(data);
+            const idade = hoje.getFullYear() - dataNascimento.getFullYear();
+            const mes = hoje.getMonth() - dataNascimento.getMonth();
+
+            if (mes < 0 || (mes === 0 && hoje.getDate() < dataNascimento.getDate())) {
+                idade--;
+            }
+
+            if (idade < 10) {
+                return "A idade mínima é de 10 anos.";
+            } else if (idade >= 115) {
+                return "A idade máxima é de 115 anos.";
+            } else if (idade > 110) {
+                return "A idade máxima é de 110 anos.";
+            }
+
+            return "";
+        }
+
+        function formatarCPF(cpf) {
+            cpf = cpf.replace(/\D/g, ""); // Remove tudo o que não é dígito
+            cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2"); // Coloca o primeiro ponto
+            cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2"); // Coloca o segundo ponto
+            cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2"); // Coloca o traço
+            return cpf;
+        }
+
+        function validarSenha(senha) {
+            const regex = /^(?=.*[A-Z])(?=.*\d).{5,}$/;
+            return regex.test(senha);
+        }
+
+        document.getElementById('cpf').addEventListener('input', function (e) {
+            e.target.value = formatarCPF(e.target.value);
+        });
+
+        document.getElementById('username').addEventListener('input', function (e) {
+            const username = e.target.value;
+            const usernameHelp = document.getElementById('usernameHelp');
+            if (username.length < 5) {
+                usernameHelp.textContent = "O nome de usuário deve ter pelo menos 5 caracteres.";
+            } else {
+                usernameHelp.textContent = "";
+            }
+        });
+
+        document.getElementById('password').addEventListener('input', function (e) {
+            const password = e.target.value;
+            const passwordHelp = document.getElementById('passwordHelp');
+            if (!validarSenha(password)) {
+                passwordHelp.textContent = "A senha deve ter pelo menos 5 caracteres, uma letra maiúscula e um número.";
+            } else {
+                passwordHelp.textContent = "";
+            }
+        });
+
         document.getElementById('registerForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
@@ -53,12 +126,51 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
+            const cpf = document.getElementById('cpf').value;
+            const birthdate = document.getElementById('birthdate').value;
 
             if (password !== confirmPassword) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Erro!',
                     text: 'As senhas não coincidem!'
+                });
+                return;
+            }
+
+            if (!cpf || !birthdate) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: 'CPF e Data de Nascimento são obrigatórios!'
+                });
+                return;
+            }
+
+            if (!validarCPF(cpf)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: 'CPF inválido! O formato deve ser 000.000.000-00.'
+                });
+                return;
+            }
+
+            const dataNascimentoErro = validarDataNascimento(birthdate);
+            if (dataNascimentoErro) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: dataNascimentoErro
+                });
+                return;
+            }
+
+            if (!validarSenha(password)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: 'A senha deve ter pelo menos 5 caracteres, uma letra maiúscula e um número.'
                 });
                 return;
             }
