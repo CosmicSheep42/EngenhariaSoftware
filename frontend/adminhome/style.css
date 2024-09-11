@@ -25,6 +25,21 @@
       box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
 
+/* Logout button */
+.logout-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
   /* Locate button at the bottom-right */
   .locate-button {
       position: absolute;
@@ -57,15 +72,18 @@
       overflow-y: auto;
       z-index: 999;
       transform: translateX(100%);
-      /* Hidden by default */
       transition: transform 0.3s ease;
   }
 
   /* Exibir a gaveta */
   .drawer-open {
       transform: translateX(0);
-      /* Fully visible when open */
   }
+
+  .drawer-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
 
   /* Drawer toggle handle */
   .drawer-toggle {
@@ -116,3 +134,19 @@
       color: gold;
       font-size: 1.5em;
   }
+
+  /* Review list */
+.review-list {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.review-list div {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.review-list strong {
+    font-size: 1.1em;
+}
