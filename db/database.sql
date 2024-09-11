@@ -166,5 +166,5 @@ VALUES (10, 'Segunda', '08:00', '22:00'),
 
 -- Inserindo usuarios de teste
 INSERT INTO usuarios (username, email, password, adm) VALUES 
-('1', '1@1', '$2a$10$pKm9UDFNmpye2CatRQguku3RtGEcLg9YRDWALFTb1NZ4znTHNPnFi', true),
-('2', '2@2', '$2a$10$dQNLSoemhdZ3xcjDkuACJOQEqB0k5lT81pxHpKGmEYSuMFwRNlhl2', false);
+('1', '1@1', '$2a$10$dQNLSoemhdZ3xcjDkuACJOQEqB0k5lT81pxHpKGmEYSuMFwRNlhl2', true),
+('2', '2@2', '$2a$10$pKm9UDFNmpye2CatRQguku3RtGEcLg9YRDWALFTb1NZ4znTHNPnFi', false);
