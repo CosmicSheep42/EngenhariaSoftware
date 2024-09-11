@@ -57,15 +57,31 @@ function getCurrentStatus(horarios) {
     const currentDay = now.toLocaleDateString('pt-BR', { weekday: 'long' });
     const currentTime = now.toTimeString().slice(0, 5); // Obtém HH:mm
 
-    const todayHorario = horarios.find(horario => horario.dia_semana === currentDay);
+    console.log('Horarios:', horarios);
+    console.log('currentTime:', currentTime);
+
+    // Garantir que o formato dos dias da semana esteja correto
+    const diaSemana = {
+        "domingo": "Domingo",
+        "segunda-feira": "Segunda",
+        "terça-feira": "Terça",
+        "quarta-feira": "Quarta",
+        "quinta-feira": "Quinta",
+        "sexta-feira": "Sexta",
+        "sábado": "Sábado"
+    };
+    const currentDayFormatted = diaSemana[now.toLocaleDateString('pt-BR', { weekday: 'long' }).toLowerCase()] || '';
+
+    console.log('currentDayFormatted:', currentDayFormatted);
+
+    // Encontrar o horário do dia atual
+    const todayHorario = horarios.find(horario => horario.dia_semana === currentDayFormatted);
+
+    console.log('todayHorario:', todayHorario);
 
     if (todayHorario && todayHorario.horario_abertura && todayHorario.horario_fechamento) {
-        const abertura = formatTime(todayHorario.horario_abertura);
-        const fechamento = formatTime(todayHorario.horario_fechamento);
-
-        console.log('currentTime', currentTime);
-        console.log('abertura', abertura);
-        console.log('fechamento', fechamento);
+        const abertura = todayHorario.horario_abertura.slice(0, 5); // Mantém apenas HH:mm
+        const fechamento = todayHorario.horario_fechamento.slice(0, 5); // Mantém apenas HH:mm
 
         return (currentTime >= abertura && currentTime <= fechamento) ? 'Aberto' : 'Fechado';
     }

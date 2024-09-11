@@ -45,6 +45,13 @@
                 <p id="drawer-description" class="text-muted mb-1"></p>
                 <p id="drawer-subtitle" class="text-secondary mb-3"></p>
 
+                <!-- Status e Estrelas -->
+                <div class="d-flex align-items-center mb-3">
+                    <strong>Status: </strong>
+                    <span id="drawer-status" class="ms-2 badge bg-success"></span>
+                </div>
+                <div id="drawer-stars" class="star-display mb-3"></div>
+
                 <!-- Tabela de Horários -->
                 <div class="mb-3">
                     <strong>Horários:</strong>
@@ -60,12 +67,6 @@
                     </table>
                 </div>
 
-                <!-- Status e Estrelas -->
-                <div class="d-flex align-items-center mb-3">
-                    <strong>Status: </strong>
-                    <span id="drawer-status" class="ms-2 badge bg-success"></span>
-                </div>
-                <div id="drawer-stars" class="star-display mb-3"></div>
 
                 <button id="edit-pin-btn" class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#editPinModal">Editar Pin</button>
             </div>
