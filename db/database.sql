@@ -27,8 +27,8 @@ CREATE TABLE horarios_funcionamento (
     id SERIAL PRIMARY KEY,
     place_id INTEGER REFERENCES places(id) ON DELETE CASCADE,
     dia_semana VARCHAR(10) NOT NULL,  -- Ex: 'Segunda', 'Terça', etc.
-    horario_abertura TIME NOT NULL,
-    horario_fechamento TIME NOT NULL
+    horario_abertura TIME,
+    horario_fechamento TIME
 );
 
 -- Tabela de Reviews
@@ -91,7 +91,7 @@ VALUES (3, 'Segunda', '11:00', '15:00'),
        (3, 'Quinta', '11:00', '15:00'),
        (3, 'Sexta', '11:00', '15:00'),
        (3, 'Sábado', '11:00', '16:00'),
-       (3, 'Domingo', 'NULL', 'NULL');
+       (3, 'Domingo', NULL, NULL);
 
 -- Horários de funcionamento para Parque Central
 INSERT INTO horarios_funcionamento (place_id, dia_semana, horario_abertura, horario_fechamento)
@@ -111,7 +111,7 @@ VALUES (5, 'Segunda', '09:00', '18:00'),
        (5, 'Quinta', '09:00', '18:00'),
        (5, 'Sexta', '09:00', '18:00'),
        (5, 'Sábado', '10:00', '14:00'),
-       (5, 'Domingo', 'NULL', 'NULL');
+       (5, 'Domingo', NULL, NULL);
 
 -- Horários de funcionamento para Padaria Pão Quente
 INSERT INTO horarios_funcionamento (place_id, dia_semana, horario_abertura, horario_fechamento)
@@ -121,7 +121,7 @@ VALUES (6, 'Segunda', '06:00', '20:00'),
        (6, 'Quinta', '06:00', '20:00'),
        (6, 'Sexta', '06:00', '20:00'),
        (6, 'Sábado', '07:00', '14:00'),
-       (6, 'Domingo', 'NULL', 'NULL');
+       (6, 'Domingo', NULL, NULL);
 
 -- Horários de funcionamento para Academia Iron Gym
 INSERT INTO horarios_funcionamento (place_id, dia_semana, horario_abertura, horario_fechamento)
