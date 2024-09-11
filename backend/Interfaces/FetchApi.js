@@ -35,6 +35,24 @@ async function GetAllPins(req, res) {
 }
 
 
+async function IsUserAdmin(req, res) {
+
+    const client = await DatabasePool.connect();
+
+    try {
+        const result = await client.query('SELECT adm FROM usuarios WHERE id = $1', [req.session.user.id]);
+
+        const User = result.rows[0];
+
+        res.status(200).json(User);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error' });
+    } finally {
+        client.release();
+    }
+}
+
 async function GetReviews(req, res) {
     const client = await DatabasePool.connect();
 
@@ -49,4 +67,4 @@ async function GetReviews(req, res) {
     }
 }
 
-module.exports = { GetPinInfo, GetAllPins, GetReviews };
+module.exports = { GetPinInfo, GetAllPins, GetReviews, IsUserAdmin };

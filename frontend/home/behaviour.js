@@ -10,6 +10,7 @@ function addPin(lat, lon, localId) {
         fetch(`/api/getpininfo/${localId}`)
             .then(response => response.json())
             .then(data => {
+
                 document.getElementById('current-place-id').value = localId;
                 document.getElementById('drawer-title').textContent = data.nome;
                 document.getElementById('drawer-description').textContent = data.descricao;
@@ -131,6 +132,11 @@ function fetchReviews(localId) {
 
 // Function to clear review fields
 function clearReviewFields() {
+
+    if (document.querySelector('input[name="rating"]:checked').checked == null) {
+        return;
+    }
+
     document.querySelector('input[name="rating"]:checked').checked = false;
     document.getElementById('review-texto').value = '';
 }
@@ -151,7 +157,29 @@ function handleLogout() {
     window.location.href = '/login';
 }
 
+function toggle_edit_button() {
+    //fetch if user is admin ad /api/isuseradmin and show edit button if true
+    fetch('/api/isuseradmin')
+        .then(response => response.json())
+        .then(data => {
+            if (data.adm) {
+                document.getElementById('edit-pin-btn').style.display = 'block';
+            } else {
+                document.getElementById('edit-pin-btn').style.display = 'none';
+            }
+        });
+
+}
+
+toggle_edit_button();
+
+
+
+document.getElementById('logout-btn').addEventListener('click', handleLogout);
+
 addAllPins();
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const editPinForm = document.getElementById('edit-pin-form');
@@ -211,3 +239,20 @@ function handleEditPinFormSubmit(event) {
         })
         .catch(error => console.error('Error editing pin:', error));
 }
+
+document.querySelector('.drawer-toggle').addEventListener('click', function () {
+    document.body.classList.toggle('drawer-open');
+});
+
+document.getElementById('logout-btn').addEventListener('click', function () {
+    fetch('/api/logout', {
+        method: 'POST',
+        credentials: 'same-origin'
+    }).then(response => {
+        if (response.ok) {
+            window.location.href = '/login';
+        } else {
+            alert('Erro ao fazer logout');
+        }
+    });
+});

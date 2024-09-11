@@ -19,15 +19,6 @@ function isAdmin(req, res, next) {
 
 async function Redirect(req, res, next) {
 
-
-    if (req.session.user.adm) {
-        res.status(200).redirect('/adminhome/');
-    }
-
-    if (!req.session.user.adm) {
-        res.status(200).redirect('/userhome/');
-    }
-
     next();
 }
 

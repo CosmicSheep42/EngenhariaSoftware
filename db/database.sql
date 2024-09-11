@@ -5,7 +5,6 @@ CREATE TABLE places (
     cor VARCHAR(7) DEFAULT '#000000' NOT NULL,  -- Cor do marcador no mapa
     descricao TEXT,
     subtitulo VARCHAR(255),
-    image bytea,  -- Imagem do local
     lat DECIMAL(9, 6) NOT NULL,
     lon DECIMAL(9, 6) NOT NULL,
     estrelas NUMERIC(2, 1) DEFAULT 0,  -- Média das estrelas

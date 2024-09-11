@@ -40,8 +40,8 @@ html {
     cursor: pointer;
 }
 
- /* Locate button at the bottom-right */
- .locate-button {
+/* Locate button at the bottom-right */
+.locate-button {
     position: absolute;
     bottom: 20px;
     right: 20px;
@@ -139,4 +139,8 @@ html {
 
 .review-list strong {
     font-size: 1.1em;
+}
+
+.drawer-open #logout-btn {
+    display: none;
 }

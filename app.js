@@ -39,6 +39,7 @@ App.post('/api/logout', RedirectModule.isAuthenticated, AuthApi.Logout);
 //Api Get Routes
 App.get('/api/getpininfo/:id', RedirectModule.isAuthenticated, FetchDataApi.GetPinInfo);
 App.get('/api/getallpins', RedirectModule.isAuthenticated, FetchDataApi.GetAllPins);
+App.get('/api/isuseradmin', RedirectModule.isAuthenticated, FetchDataApi.IsUserAdmin);
 
 //Review Api
 App.post('/api/postreview/', RedirectModule.isAuthenticated, PostDataApi.PostReview);
@@ -52,10 +53,7 @@ App.use('/register', express.static('./frontend/register'))
 App.use('/assets', express.static('./frontend/assets'));
 App.use('/styles', express.static('./frontend/styles'));
 
-// Protect Frontend route
-App.use('/userhome', RedirectModule.isAuthenticated, SessionModule.RenewSession, express.static('./frontend/userhome'));
-App.use('/adminhome', RedirectModule.isAuthenticated, RedirectModule.isAdmin, express.static('./frontend/adminhome'));
-
+// Protect Frontend routes
 
 App.use('/', RedirectModule.isAuthenticated, SessionModule.RenewSession, RedirectModule.Redirect, express.static('./frontend/'));
 
