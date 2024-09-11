@@ -1,4 +1,3 @@
--- Tabela de Locais
 CREATE TABLE places (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
@@ -32,7 +31,6 @@ CREATE TABLE horarios_funcionamento (
     horario_fechamento TIME NOT NULL
 );
 
-
 -- Tabela de Reviews
 CREATE TABLE reviews (
     id SERIAL PRIMARY KEY,
@@ -50,8 +48,7 @@ CREATE TABLE usuarios (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     adm BOOLEAN DEFAULT FALSE NOT NULL
-); 
-
+);
 
 -- Inserindo locais de exemplo
 INSERT INTO places (nome, descricao, subtitulo, lat, lon) VALUES 
@@ -59,13 +56,12 @@ INSERT INTO places (nome, descricao, subtitulo, lat, lon) VALUES
 ('Bar do Zé', 'Melhor bar da cidade', 'Bebidas e petiscos', -22.906847, -43.172896),
 ('Restaurante da Maria', 'Comida caseira de qualidade', 'Comida Brasileira', -23.532503, -46.639302),
 ('Parque Central', 'Um ótimo lugar para relaxar', 'Natureza e ar livre', -23.561682, -46.625378),
-('Biblioteca Municipal', 'Livros e conhecimento', 'Cultura', -23.567815, -46.648620);
+('Biblioteca Municipal', 'Livros e conhecimento', 'Cultura', -23.567815, -46.648620),
 ('Padaria Pão Quente', 'Pães frescos todos os dias', 'Panificadora e Confeitaria', -23.551225, -46.635563),
 ('Academia Iron Gym', 'Treinamento de força e resistência', 'Fitness e Musculação', -23.559134, -46.645839),
 ('Sorveteria Gelato', 'Sorvetes artesanais', 'Doces e Sobremesas', -22.912347, -43.176092),
 ('Cinema Central', 'Os melhores filmes em cartaz', 'Entretenimento', -23.548526, -46.629278),
 ('Farmácia Saúde', 'Medicamentos e produtos de saúde', 'Saúde e Bem-estar', -23.557384, -46.662021);
-
 
 -- Horários de funcionamento para Mercadinho
 INSERT INTO horarios_funcionamento (place_id, dia_semana, horario_abertura, horario_fechamento)
@@ -116,7 +112,6 @@ VALUES (5, 'Segunda', '09:00', '18:00'),
        (5, 'Sexta', '09:00', '18:00'),
        (5, 'Sábado', '10:00', '14:00'),
        (5, 'Domingo', 'Fechado', 'Fechado');
-
 
 -- Horários de funcionamento para Padaria Pão Quente
 INSERT INTO horarios_funcionamento (place_id, dia_semana, horario_abertura, horario_fechamento)
