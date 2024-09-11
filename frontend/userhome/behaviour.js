@@ -10,6 +10,7 @@ function addPin(lat, lon, localId) {
         fetch(`/api/getpininfo/${localId}`)
             .then(response => response.json())
             .then(data => {
+                
                 document.getElementById('current-place-id').value = localId;
                 document.getElementById('drawer-title').textContent = data.nome;
                 document.getElementById('drawer-description').textContent = data.descricao;
