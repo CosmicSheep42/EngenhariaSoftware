@@ -4,7 +4,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - HOST=127.0.0.1
+      - HOST=0.0.0.0
       - PORT=3000
       - SESSION_SECRET=SessionCat
       - TIMEOUT=3600000
