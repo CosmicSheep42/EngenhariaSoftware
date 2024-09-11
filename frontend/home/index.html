@@ -39,11 +39,34 @@
             </li>
         </ul>
         <div class="tab-content" id="drawerContent">
+            <!-- Informações do pin -->
             <div class="tab-pane fade show active panel" id="geral" role="tabpanel" aria-labelledby="geral-tab">
-                <p id="drawer-description"></p>
-                <p id="drawer-subtitle"></p>
-                <p id="drawer-status"></p>
-                <div id="drawer-stars" class="star-display"></div>
+                <h3 id="drawer-title" class="fw-bold"></h3>
+                <p id="drawer-description" class="text-muted mb-1"></p>
+                <p id="drawer-subtitle" class="text-secondary mb-3"></p>
+
+                <!-- Tabela de Horários -->
+                <div class="mb-3">
+                    <strong>Horários:</strong>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Dia da Semana</th>
+                                <th>Horário de Abertura</th>
+                                <th>Horário de Fechamento</th>
+                            </tr>
+                        </thead>
+                        <tbody id="drawer-horario-table"></tbody>
+                    </table>
+                </div>
+
+                <!-- Status e Estrelas -->
+                <div class="d-flex align-items-center mb-3">
+                    <strong>Status: </strong>
+                    <span id="drawer-status" class="ms-2 badge bg-success"></span>
+                </div>
+                <div id="drawer-stars" class="star-display mb-3"></div>
+
                 <button id="edit-pin-btn" class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#editPinModal">Editar Pin</button>
             </div>
             <div class="tab-pane fade panel" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
@@ -105,7 +128,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
     <script src="./behaviour.js"></script>
-
 
 </body>
 

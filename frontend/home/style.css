@@ -126,21 +126,27 @@ html {
 }
 
 /* Review list */
-.review-list {
-    border-top: 1px solid #ddd;
-    padding-top: 10px;
-    margin-top: 10px;
+/* Ajustes no estilo do drawer para maior clareza */
+.drawer .drawer-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
-.review-list div {
-    padding: 10px 0;
-    border-bottom: 1px solid #ddd;
+.drawer .star-display span {
+    font-size: 1.2rem;
+    color: #ffc107;
+    /* Cor das estrelas */
 }
 
-.review-list strong {
-    font-size: 1.1em;
+.drawer .badge {
+    font-size: 1rem;
+    padding: 0.5rem;
 }
 
-.drawer-open #logout-btn {
-    display: none;
+/* Estilo para os horários */
+#drawer-horario-abertura,
+#drawer-horario-fechamento {
+    font-weight: bold;
+    color: #495057;
+    /* Cor discreta para texto */
 }

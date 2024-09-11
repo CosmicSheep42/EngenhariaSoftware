@@ -10,48 +10,66 @@ function addPin(lat, lon, localId) {
         fetch(`/api/getpininfo/${localId}`)
             .then(response => response.json())
             .then(data => {
-
                 document.getElementById('current-place-id').value = localId;
                 document.getElementById('drawer-title').textContent = data.nome;
                 document.getElementById('drawer-description').textContent = data.descricao;
                 document.getElementById('drawer-subtitle').textContent = data.subtitulo;
-                document.getElementById('drawer-status').textContent = data.status;
                 document.getElementById('drawer-stars').innerHTML = getStarIcons(data.estrelas);
+
+                fetch(`/api/gethorarioinfo/${localId}`)
+                    .then(response => response.json())
+                    .then(horarios => {
+                        const horarioTable = document.getElementById('drawer-horario-table');
+                        horarioTable.innerHTML = '';
+                        horarios.forEach(horario => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `<td>${horario.dia_semana}</td><td>${formatTime(horario.horario_abertura)}</td><td>${formatTime(horario.horario_fechamento)}</td>`;
+                            horarioTable.appendChild(row);
+                        });
+
+                        const currentStatus = getCurrentStatus(horarios);
+                        document.getElementById('drawer-status').textContent = currentStatus;
+                        document.getElementById('drawer-status').className = currentStatus === 'Aberto' ? 'badge bg-success' : 'badge bg-danger';
+                    });
+
                 document.getElementById('infoDrawer').classList.add('drawer-open');
 
-                // Fetch and display reviews
                 fetchReviews(localId);
-
-                // Fetch and display cardapio
-                fetch(`/api/getcardapio/${localId}`)
-                    .then(response => response.json())
-                    .then(cardapio => {
-                        const cardapioContent = document.getElementById('cardapio-content');
-                        cardapioContent.innerHTML = '';
-                        cardapio.forEach(item => {
-                            const cardapioItem = document.createElement('div');
-                            cardapioItem.innerHTML = `<strong>${item.nome}</strong>: ${item.descricao}`;
-                            cardapioContent.appendChild(cardapioItem);
-                        });
-                    });
-
-                // Fetch and display avisos
-                fetch(`/api/getavisos/${localId}`)
-                    .then(response => response.json())
-                    .then(avisos => {
-                        const avisosContent = document.getElementById('avisos-content');
-                        avisosContent.innerHTML = '';
-                        avisos.forEach(aviso => {
-                            const avisoItem = document.createElement('div');
-                            avisoItem.innerHTML = `<strong>${aviso.titulo}</strong>: ${aviso.descricao}`;
-                            avisosContent.appendChild(avisoItem);
-                        });
-                    });
-
-                // Clear review fields
                 clearReviewFields();
             });
     });
+}
+
+// Formatar o horário para HH:mm
+function formatTime(timeString) {
+
+    if (!timeString) {
+        return 'fechado';
+    }
+
+    const [hours, minutes] = timeString.split(':');
+    return `${hours}:${minutes}`;
+}
+
+
+function getCurrentStatus(horarios) {
+    const now = new Date();
+    const currentDay = now.toLocaleDateString('pt-BR', { weekday: 'long' });
+    const currentTime = now.toTimeString().slice(0, 5); // Obtém HH:mm
+
+    const todayHorario = horarios.find(horario => horario.dia_semana === currentDay);
+
+    if (todayHorario && todayHorario.horario_abertura && todayHorario.horario_fechamento) {
+        const abertura = formatTime(todayHorario.horario_abertura);
+        const fechamento = formatTime(todayHorario.horario_fechamento);
+
+        console.log('currentTime', currentTime);
+        console.log('abertura', abertura);
+        console.log('fechamento', fechamento);
+
+        return (currentTime >= abertura && currentTime <= fechamento) ? 'Aberto' : 'Fechado';
+    }
+    return 'Fechado';
 }
 
 // Add all pins
@@ -108,9 +126,7 @@ document.getElementById('submit-review').addEventListener('click', function () {
         })
     }).then(response => response.json())
         .then(data => {
-            // Refresh reviews
             fetchReviews(localId);
-            // Clear review fields
             clearReviewFields();
         });
 });
@@ -132,12 +148,10 @@ function fetchReviews(localId) {
 
 // Function to clear review fields
 function clearReviewFields() {
-
-    if (document.querySelector('input[name="rating"]:checked').checked == null) {
-        return;
+    const checkedRating = document.querySelector('input[name="rating"]:checked');
+    if (checkedRating) {
+        checkedRating.checked = false;
     }
-
-    document.querySelector('input[name="rating"]:checked').checked = false;
     document.getElementById('review-texto').value = '';
 }
 
@@ -152,13 +166,10 @@ function getStarIcons(rating) {
 
 // Function to handle logout
 function handleLogout() {
-    // Perform logout action, e.g., clear session, redirect to login page, etc.
-    // For demonstration, we'll just redirect to a login page
     window.location.href = '/login';
 }
 
 function toggle_edit_button() {
-    //fetch if user is admin ad /api/isuseradmin and show edit button if true
     fetch('/api/isuseradmin')
         .then(response => response.json())
         .then(data => {
@@ -168,24 +179,18 @@ function toggle_edit_button() {
                 document.getElementById('edit-pin-btn').style.display = 'none';
             }
         });
-
 }
 
 toggle_edit_button();
-
-
 
 document.getElementById('logout-btn').addEventListener('click', handleLogout);
 
 addAllPins();
 
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const editPinForm = document.getElementById('edit-pin-form');
     editPinForm.addEventListener('submit', handleEditPinFormSubmit);
 
-    // Populate the form with the current pin data when the modal is shown
     const editPinModal = document.getElementById('editPinModal');
     editPinModal.addEventListener('show.bs.modal', populateEditPinForm);
 });
@@ -221,7 +226,6 @@ function handleEditPinFormSubmit(event) {
         .then(response => response.json())
         .then(data => {
             if (data) {
-                // Fetch the updated pin data and update the UI
                 fetch(`/api/getpininfo/${pinId}`)
                     .then(response => response.json())
                     .then(updatedData => {
@@ -232,7 +236,6 @@ function handleEditPinFormSubmit(event) {
                         document.getElementById('drawer-stars').innerHTML = getStarIcons(updatedData.estrelas);
                     });
 
-                // Close the modal
                 const editPinModal = bootstrap.Modal.getInstance(document.getElementById('editPinModal'));
                 editPinModal.hide();
             }

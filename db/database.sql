@@ -8,8 +8,6 @@ CREATE TABLE places (
     lon DECIMAL(9, 6) NOT NULL,
     estrelas NUMERIC(2, 1) DEFAULT 0,  -- Média das estrelas
     quantidade_reviews INTEGER DEFAULT 0,  -- Quantidade de reviews
-    horario_abertura TIME,  -- Horário de abertura
-    horario_fechamento TIME  -- Horário de fechamento
 );
 
 CREATE TABLE uploads (

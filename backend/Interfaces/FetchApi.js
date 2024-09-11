@@ -67,4 +67,34 @@ async function GetReviews(req, res) {
     }
 }
 
-module.exports = { GetPinInfo, GetAllPins, GetReviews, IsUserAdmin };
+async function GetPinHorarioInfo(req, res) {
+    const client = await DatabasePool.connect();
+
+    try {
+        const id = req.params.id; // Assuming placeId is passed as a URL parameter
+        const query = `
+            SELECT dia_semana, horario_abertura, horario_fechamento 
+            FROM horarios_funcionamento 
+            WHERE place_id = $1
+        `;
+        const values = [id];
+
+        const result = await client.query(query, values);
+
+        if (result.rows.length === 0) {
+            res.status(404).json({ message: 'No Horarios Found' });
+            return;
+        }
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching horarios' });
+    } finally {
+        client.release();
+    }
+}
+
+
+
+module.exports = { GetPinInfo, GetAllPins, GetReviews, IsUserAdmin, GetPinHorarioInfo };

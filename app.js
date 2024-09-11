@@ -38,12 +38,14 @@ App.post('/api/logout', RedirectModule.isAuthenticated, AuthApi.Logout);
 
 //Api Get Routes
 App.get('/api/getpininfo/:id', RedirectModule.isAuthenticated, FetchDataApi.GetPinInfo);
+App.get('/api/gethorarioinfo/:id', RedirectModule.isAuthenticated, FetchDataApi.GetPinHorarioInfo);
 App.get('/api/getallpins', RedirectModule.isAuthenticated, FetchDataApi.GetAllPins);
 App.get('/api/isuseradmin', RedirectModule.isAuthenticated, FetchDataApi.IsUserAdmin);
 
 //Review Api
 App.post('/api/postreview/', RedirectModule.isAuthenticated, PostDataApi.PostReview);
 App.get('/api/getreviews/:id', RedirectModule.isAuthenticated, FetchDataApi.GetReviews);
+
 
 App.post('/api/editpin/', RedirectModule.isAdmin, RedirectModule.isAuthenticated, PostDataApi.EditPin);
 
