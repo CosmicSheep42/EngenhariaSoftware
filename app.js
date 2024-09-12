@@ -41,6 +41,7 @@ App.get('/api/getpininfo/:id', RedirectModule.isAuthenticated, FetchDataApi.GetP
 App.get('/api/gethorarioinfo/:id', RedirectModule.isAuthenticated, FetchDataApi.GetPinHorarioInfo);
 App.get('/api/getallpins', RedirectModule.isAuthenticated, FetchDataApi.GetAllPins);
 App.get('/api/isuseradmin', RedirectModule.isAuthenticated, FetchDataApi.IsUserAdmin);
+App.get('/api/getcoords/:nome', RedirectModule.isAuthenticated, FetchDataApi.GetCoords);
 
 //Review Api
 App.post('/api/postreview/', RedirectModule.isAuthenticated, PostDataApi.PostReview);

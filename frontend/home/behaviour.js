@@ -51,6 +51,27 @@ function formatTime(timeString) {
     return `${hours}:${minutes}`;
 }
 
+// função de pesquisa
+document.getElementById('search-form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevenir comportamento padrão do formulário
+    
+        const searchInput = document.getElementById('search-input').value;
+    
+        fetch(`/api/getcoords/${searchInput}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.lat && data.lon) {
+                    map.setView([data.lat, data.lon], 16); // Centralizar o mapa nas coordenadas
+                } else {
+                    alert('Local não encontrado');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao buscar coordenadas:', error);
+                alert('Erro ao buscar coordenadas');
+            });
+    });
+
 
 function getCurrentStatus(horarios) {
     const now = new Date();

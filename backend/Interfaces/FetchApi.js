@@ -95,6 +95,24 @@ async function GetPinHorarioInfo(req, res) {
     }
 }
 
+async function GetCoords(req, res) {
+    const client = await DatabasePool.connect();
 
+    try {
+        const result = await client.query('SELECT lat, lon FROM places WHERE nome = $1', [req.params.nome]);
 
-module.exports = { GetPinInfo, GetAllPins, GetReviews, IsUserAdmin, GetPinHorarioInfo };
+        if (result.rows.length === 0) {
+            res.status(404).json({ message: 'No Pin Found' });
+            return;
+        }
+
+        res.status(200).json(result.rows[0]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error' });
+    } finally {
+        client.release();
+    }
+}
+
+module.exports = { GetPinInfo, GetAllPins, GetReviews, IsUserAdmin, GetPinHorarioInfo, GetCoords };
